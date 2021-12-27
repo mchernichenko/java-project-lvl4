@@ -9,17 +9,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Set up JDK
       - uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
+          distribution: 'adopt'
           java-version: '16'
-      - name: Build with Gradle
-        run: make build
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: src/main/java
+          JACOCO_SOURCE_PATH: "${{github.workspace}}/src/main/java"
         with:
-          coverageCommand: make report
+          coverageCommand: make build
           coverageLocations: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
