@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'com.github.ben-manes.versions' version '0.38.0'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'com.adarshr.test-logger' version '3.0.0'
+}
+
+group = 'hexlet.code'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+// целевая версия Java под которую компилируется проект
+compileJava {
+    options.release = 16
+}
+
+checkstyle {
+    toolVersion '8.41'
+}
