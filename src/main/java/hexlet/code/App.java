@@ -4,9 +4,6 @@ package hexlet.code;
 import hexlet.code.controllers.WelcomeController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.post;
 
 import org.thymeleaf.TemplateEngine;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
@@ -75,11 +72,11 @@ public final class App {
     private static void showAppURL() throws IOException {
         Socket socket = new Socket();
         socket.connect(new InetSocketAddress("google.com", 80)); // получить внешний ip-адрес
-        String InetIP = socket.getLocalAddress().toString();
+        String inetIP = socket.getLocalAddress().toString();
 
         int port = getPort();
-        String LocalIP = InetAddress.getLocalHost().getHostAddress();
-        String baseUrl = "App listening on ---> http:/" + InetIP + ":" + port;
+        String localIP = InetAddress.getLocalHost().getHostAddress();
+        String baseUrl = "App listening on ---> http:/" + inetIP + ":" + port;
         System.out.println(baseUrl);
     }
 
