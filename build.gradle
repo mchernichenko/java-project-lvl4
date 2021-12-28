@@ -19,10 +19,10 @@ application {
 }
 
 compileJava {
-    options.release = 16
+    options.release = 15
     options.encoding = "UTF-8"
 }
-
+sourceCompatibility = '15'
 sourceSets.main.java.srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
 
 dependencies {
