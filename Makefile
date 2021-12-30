@@ -8,13 +8,13 @@ build:
 	./gradlew clean build
 
 start:
-	./gradlew run
+	APP_ENV=development ./gradlew run
 
 install:
 	./gradlew install
 
 start-dist:
-	APP_ENV=production ./build/install/java-javalin-blog/bin/java-javalin-blog
+	APP_ENV=production ./build/install/app/bin/app
 
 generate-migrations:
 	./gradlew generateMigrations

@@ -3,12 +3,16 @@ datasource:
   development:
     username: sa
     password: sa
-    url: "jdbc:h2:./database"
+    url: "jdbc:h2:./hexlet"
   production:
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: "postgres"
+    password: "postgres"
+    url: "jdbc:postgresql://172.20.127.90:5432/hexlet_db"
 
+# Заполняем базу данных первоначальными данными
 ebean:
-  migration:
-    run: true
+  db:
+    ddl:
+      generate: true
+      run: true
+      seedSql: seed.sql
