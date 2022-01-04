@@ -5,8 +5,8 @@ datasource:
     password: ""
     url: "jdbc:h2:./hexlet;AUTO_SERVER=TRUE"
   production:
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     url: ${JDBC_DATABASE_URL}
   local_pg:
     username: "postgres"
