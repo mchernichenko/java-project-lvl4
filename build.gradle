@@ -4,7 +4,7 @@ plugins {
 	id 'com.adarshr.test-logger' version '3.0.0'
     id 'checkstyle'
     id 'jacoco'  
-    id 'io.ebean' version '12.11.5'
+    id 'io.ebean' version '12.12.1'
 }
 
 group = 'hexlet.code'
@@ -40,12 +40,12 @@ dependencies {
   implementation 'com.h2database:h2:2.0.204'
   implementation 'org.postgresql:postgresql:42.2.24'
 
-  implementation 'io.ebean:ebean:12.11.5'
-  implementation 'io.ebean:ebean-ddl-generator:12.11.5'
-  implementation 'io.ebean:ebean-querybean:12.11.5'
-  implementation 'io.ebean:ebean-migration:12.11.2'
+  implementation 'io.ebean:ebean:12.12.1'
+  implementation 'io.ebean:ebean-ddl-generator:12.12.1'
+  implementation 'io.ebean:ebean-querybean:12.12.1'
+  implementation 'io.ebean:ebean-migration:12.12.1'
   implementation 'io.ebean:ebean-annotation:7.3'
-  annotationProcessor 'io.ebean:querybean-generator:12.11.5'
+  annotationProcessor 'io.ebean:querybean-generator:12.12.1'
 
   // NOTE: ebean-ddl-generator требует старые зависимости, которых нет в java 9 и выше
   implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
