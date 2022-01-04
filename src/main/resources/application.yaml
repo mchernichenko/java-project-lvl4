@@ -7,7 +7,7 @@ datasource:
   production:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-    url: ${DATABASE_URL}
+    url: ${JDBC_DATABASE_URL}
   local_pg:
     username: "postgres"
     password: "postgres"
