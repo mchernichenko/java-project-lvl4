@@ -1,7 +1,8 @@
 package hexlet.code;
 
-// Импортируем зависимости, необходимые для работы приложения
-import hexlet.code.controllers.WelcomeController;
+import hexlet.code.controllers.RootController;
+import hexlet.code.controllers.UrlController;
+
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
 
@@ -10,55 +11,77 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public final class App {
+    private static final String TEMPLATE_DIR = "/templates/";
+    private static final String FILE_ENCODING = "UTF-8";
+    private static final String PORT = "5000";
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "5000");
+        String port = System.getenv().getOrDefault("PORT", PORT);
         return Integer.valueOf(port);
     }
 
-    // Javalin поддерживает работу с шаблонизатором thymeleaf
+    /** Создание инстанса движка шаблонизатора и добавление к нему диалектов.
+     *  Настройка преобразователь шаблонов так, чтобы обрабатывались шаблоны в директории /templates/
+     *  и добавление преобразователя шаблонов к движку шаблонизатора
+     *  @return - инстанс настроенного шаблонизатора thymeleaf
+     */
     private static TemplateEngine getTemplateEngine() {
-        // Создаём инстанс движка шаблонизатора
         TemplateEngine templateEngine = new TemplateEngine();
-        // Добавляем к нему диалекты
         templateEngine.addDialect(new LayoutDialect());
         templateEngine.addDialect(new Java8TimeDialect());
-        // Настраиваем преобразователь шаблонов, так, чтобы обрабатывались
-        // шаблоны в директории /templates/
+
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("/templates/");
-        templateResolver.setCharacterEncoding("UTF-8");
-        // Добавляем преобразователь шаблонов к движку шаблонизатора
+        templateResolver.setPrefix(TEMPLATE_DIR);
+        templateResolver.setCharacterEncoding(FILE_ENCODING);
         templateEngine.addTemplateResolver(templateResolver);
 
         return templateEngine;
     }
 
-    // Метод добавляет маршруты в переданное приложение
+    /**
+     * Добавление роутов.
+     * GET  / - стартовая страница для проверки введённого URL (index.html)
+     * POST /urls - ввод имени введённого URL с формы (параметр "url").
+     * После успешного ввода редирект на showListUrls.html иначе остаёмся на index.html
+     * GET  /urls - запрос списка URL  (showListUrls.html).
+     * GET  /urls/{id} - запрос инфо по конкретному URL (showInfoUrl.html)
+     * POST /urls/{id}/checks - проверка URL с добавлением записи о проверке (после - редирект на showInfoUrl.html)
+     * @param app - экземпляр Javalin
+     */
     private static void addRoutes(Javalin app) {
-        // Для GET-запроса на маршрут / будет выполняться
-        // обработчик welcome в контроллере WelcomeController
-        app.get("/", WelcomeController.welcome); // ctx -> {ctx.render("index.html");}
+        app.get("/", RootController.root);
+
+        app.routes(() -> {
+            path("urls", () -> {
+                get(UrlController.listUrls);
+                post(UrlController.createUrl);
+                path("{id}", () -> {
+                    get(UrlController.showUrl);
+                    path(("checks"), () -> {
+                        post(UrlController.checkUrl);
+                    });
+                });
+            });
+        });
     }
 
     public static Javalin getApp() {
-
-        // Создаём приложение
         Javalin app = Javalin.create(config -> {
-            // Включаем логгирование
-            config.enableDevLogging();
-            // Подключаем настроенный шаблонизатор к фреймворку
-            JavalinThymeleaf.configure(getTemplateEngine());
+            config.enableDevLogging();  // Включаем логирование
+            config.enableWebjars();
+            JavalinThymeleaf.configure(getTemplateEngine()); // Подключаем настроенный шаблонизатор к фреймворку
         });
-
-        // Добавляем маршруты в приложение
-        addRoutes(app);
+        addRoutes(app); // Добавляем маршруты в приложение
 
         // Обработчик before запускается перед каждым запросом
         // Устанавливаем атрибут ctx для запросов

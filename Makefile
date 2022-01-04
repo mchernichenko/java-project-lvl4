@@ -7,13 +7,19 @@ clean:
 build:
 	./gradlew clean build
 
-start:
+start-dev:
 	APP_ENV=development ./gradlew run
+
+start-prod:
+	APP_ENV=production ./gradlew run
+
+start-pg:
+	APP_ENV=local_pg ./gradlew run
 
 install:
 	./gradlew install
 
-start-dist:
+run-dist:
 	APP_ENV=production ./build/install/app/bin/app
 
 generate-migrations:

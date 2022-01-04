@@ -1,18 +1,19 @@
 datasource:
   default: ${APP_ENV}
   development:
-    username: sa
-    password: sa
-    url: "jdbc:h2:./hexlet"
+    username: ""
+    password: ""
+    url: "jdbc:h2:./hexlet;AUTO_SERVER=TRUE"
   production:
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+  local_pg:
     username: "postgres"
     password: "postgres"
-    url: "jdbc:postgresql://172.20.127.90:5432/hexlet_db"
+    url: "jdbc:postgresql://172.19.209.225:5432/hexletdb"
 
-# Заполняем базу данных первоначальными данными
+## запуск миграционных скриптов /resources/dbmigration после старта Ebean сервера
 ebean:
-  db:
-    ddl:
-      generate: true
-      run: true
-      seedSql: seed.sql
+  migration:
+    run: true

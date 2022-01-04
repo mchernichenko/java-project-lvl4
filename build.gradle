@@ -10,6 +10,8 @@ plugins {
 group = 'hexlet.code'
 version = '1.0-SNAPSHOT'
 
+applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+
 repositories {
     mavenCentral()
 }
@@ -35,7 +37,7 @@ dependencies {
   implementation 'io.javalin:javalin:4.0.1'
   implementation 'org.slf4j:slf4j-simple:1.7.31'
 
-  implementation 'com.h2database:h2:1.4.200'
+  implementation 'com.h2database:h2:2.0.204'
   implementation 'org.postgresql:postgresql:42.2.24'
 
   implementation 'io.ebean:ebean:12.11.5'
