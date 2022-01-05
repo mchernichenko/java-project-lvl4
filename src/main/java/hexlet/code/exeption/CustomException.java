@@ -1,9 +1,7 @@
 package hexlet.code.exeption;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
 public class CustomException extends Throwable {
     private static final String EXCEPTION_DESCRIPTION_FORMAT = "[%s]: %s";
@@ -15,11 +13,11 @@ public class CustomException extends Throwable {
         this.message = message;
     }
 
-    /**
+/*    *//*
      * Полное описание ошибки.
      * @return - ErrorDescription в формате errorCode: message
-     */
+     *//*
     public String getErrorDescription() {
         return String.format(EXCEPTION_DESCRIPTION_FORMAT, this.errorCode, this.message);
-    }
+    }*/
 }

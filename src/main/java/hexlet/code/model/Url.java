@@ -7,13 +7,11 @@ import io.ebean.annotation.NotNull;
 import io.ebean.annotation.WhenCreated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.Instant;
 
-@Setter
 @Getter
 // генерирует конструктор, принимающий значения для каждого final поля
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ import java.time.Instant;
 public class Url extends Model {
 
     @Id
-    @Identity(generated = IdentityGenerated.BY_DEFAULT)
+    //@Identity(generated = IdentityGenerated.BY_DEFAULT)
     private long id;
 
     @NotNull

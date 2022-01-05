@@ -1,3 +1,5 @@
+.PHONY: build
+
 setup:
 	gradle wrapper --gradle-version 7.2
 
@@ -37,4 +39,3 @@ report:
 check-updates:
 	./gradlew dependencyUpdates
 
-.PHONY: build

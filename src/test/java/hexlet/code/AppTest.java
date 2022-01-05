@@ -82,8 +82,8 @@ public final class AppTest {
     // Ввод существующего URL, проверка успешного перенаправление запроса и недобавления url в БД
     @Test
     void testAddTheSameUrl() {
-        String enteredUrl = "https://www.example.com";
-        String expectedUrl = "https://www.example.com";
+        String enteredUrl = "https://www.example.com:777";
+        String expectedUrl = "https://www.example.com:777";
         Unirest
                 .post(baseUrl + "/urls")
                 .field("url", enteredUrl)
