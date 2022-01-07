@@ -6,13 +6,16 @@ import io.ebean.DB;
 import io.ebean.Transaction;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
+import kong.unirest.HttpStatus;
 import kong.unirest.Unirest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
+import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -28,13 +31,17 @@ public final class AppTest {
     private static Javalin app;
     private static String baseUrl;
     private static Transaction transaction;
+    private static MockWebServer mockServer;
 
     @BeforeAll
-    static void beforeAll() {
+    static void beforeAll() throws IOException {
         app = App.getApp();
         app.start(0); // 0 - запуск на случайном порту
         int port = app.port();
         baseUrl = "http://localhost:" + port;
+
+        mockServer = new MockWebServer();
+        mockServer.start();
     }
 
     @BeforeEach
@@ -48,14 +55,17 @@ public final class AppTest {
     }
 
     @AfterAll
-    static void afterAll() {
+    static void afterAll() throws IOException {
         app.stop();
+        mockServer.shutdown();
     }
+
     // Тест стартовой страницы
     @Test
     void testRoot() {
         HttpResponse<String> response = Unirest.get(baseUrl).asString();
         assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.getBody()).contains("Анализатор страниц");
     }
 
     // Ввод несуществующего URL, проверка успешного перенаправление запроса и добавления url в БД
@@ -166,5 +176,52 @@ public final class AppTest {
         // проверяем наличие ожидаемого значения URL на странице
         String body = (String) response.getBody();
         assertThat(body).contains(expectedUrl);
+    }
+
+    @Test
+    void testCheckUrl() throws InterruptedException {
+
+        StringBuilder bodyHtml = new StringBuilder();
+        bodyHtml.append("""
+            <!DOCTYPE html>
+            <html>
+               <head>
+                  <title>testTitle</title>
+                  <meta name="description" content="testDescription" />
+               </head>
+               <body>
+                  <h1>testH1</h1>
+               </body>
+            </html>
+            """);
+
+        String moskBaseUrl = mockServer.url("/").toString();
+        mockServer.enqueue(new MockResponse().setBody(bodyHtml.toString()));
+
+        // добавляем URL мок-сервиса для проверки и достаём ид БД его id
+        Unirest
+                .post(baseUrl + "/urls")
+                .field("url", moskBaseUrl)
+                .asEmpty();
+        Url newUrl = new QUrl()
+                .name
+                .equalTo(moskBaseUrl.substring(0, moskBaseUrl.length() - 1))
+                .findOne();
+
+        Unirest
+                .post(baseUrl + "/urls/" + newUrl.getId() + "/checks")
+                .asEmpty();
+
+        // переходим на страницу сайта для проверки добавленной записи в список проверок
+        HttpResponse<String> getResponse = Unirest
+                .get(baseUrl + "/urls/" + newUrl.getId())
+                .asString();
+
+        assertThat(getResponse.getStatus()).isEqualTo(HttpStatus.OK);
+        String body = getResponse.getBody();
+        //assertThat(body).contains("Страница успешно проверена");
+        assertThat(body).contains("testTitle");
+        assertThat(body).contains("testDescription");
+        assertThat(body).contains("testH1");
     }
 }

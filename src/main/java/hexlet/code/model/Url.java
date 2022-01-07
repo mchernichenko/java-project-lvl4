@@ -1,16 +1,14 @@
 package hexlet.code.model;
 
 import io.ebean.Model;
-import io.ebean.annotation.Identity;
-import io.ebean.annotation.IdentityGenerated;
 import io.ebean.annotation.NotNull;
 import io.ebean.annotation.WhenCreated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.Instant;
+import javax.persistence.*;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Getter
 // генерирует конструктор, принимающий значения для каждого final поля
@@ -26,5 +24,11 @@ public class Url extends Model {
     private final String name;
 
     @WhenCreated
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
+
+    @OneToMany(mappedBy = "url",
+               fetch = FetchType.LAZY,
+               cascade = CascadeType.ALL)
+    @OrderBy("createdAt desc")
+    private List<UrlCheck> urlChecks;
 }

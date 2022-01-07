@@ -3,7 +3,7 @@ datasource:
   development:
     username: ""
     password: ""
-    url: "jdbc:h2:./hexlet;AUTO_SERVER=TRUE"
+    url: "jdbc:h2:./hexletdb;AUTO_SERVER=TRUE"
   production:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}

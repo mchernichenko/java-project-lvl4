@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td th:text="*{getCreatedAt()}"></td>
+                    <td th:text="${#temporals.format(url.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
                 </tr>
             </tbody>
         </table>
@@ -33,7 +33,7 @@
             <button type="submit" class="btn btn-primary">Запустить проверку</button>
         </form>
 
-  <!--      <table class="table table-bordered table-hover mt-3">
+        <table class="table table-bordered table-hover mt-3">
             <thead>
                 <th class="col-1">ID</th>
                 <th class="col-1">Код ответа</th>
@@ -49,10 +49,10 @@
                     <td th:text="${urlCheck.title}"></td>
                     <td th:text="${urlCheck.h1}"></td>
                     <td th:text="${urlCheck.description}"></td>
-                    <td th:text="${urlCheck.createdAt}"></td>
+                    <td th:text="${#temporals.format(urlCheck.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
                 </tr>
             </tbody>
-        </table>-->
+        </table>
     </div>
 </section>
 </html>
