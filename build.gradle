@@ -98,7 +98,8 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it,
-                    exclude: ['hexlet/code/App.class', 'hexlet/code/MigrationGenerator.class'
+                    exclude: ['hexlet/code/App.class', 'hexlet/code/MigrationGenerator.class',
+                            'hexlet/code/model/query/*.class'
                     ]
             )
         }))

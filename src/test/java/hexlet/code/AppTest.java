@@ -221,9 +221,34 @@ public final class AppTest {
 
         assertThat(getResponse.getStatus()).isEqualTo(HttpStatus.OK);
         String body = getResponse.getBody();
-        //assertThat(body).contains("Страница успешно проверена");
+        assertThat(body).contains("Страница успешно проверена");
         assertThat(body).contains("testTitle");
         assertThat(body).contains("testDescription");
         assertThat(body).contains("testH1");
+    }
+
+    @Test
+    void testCheckUnknownUrl() throws InterruptedException {
+        String unknownHost = "https://non-existent-site.org";
+
+        Unirest
+                .post(baseUrl + "/urls")
+                .field("url", unknownHost)
+                .asEmpty();
+        Url newUrl = new QUrl()
+                .name
+                .equalTo(unknownHost)
+                .findOne();
+
+        Unirest
+                .post(baseUrl + "/urls/" + newUrl.getId() + "/checks")
+                .asEmpty();
+
+        HttpResponse<String> getResponse = Unirest
+                .get(baseUrl + "/urls/" + newUrl.getId())
+                .asString();
+
+        String body = getResponse.getBody();
+        assertThat(body).contains("UnknownHostException");
     }
 }
