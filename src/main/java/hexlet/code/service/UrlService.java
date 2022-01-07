@@ -89,6 +89,12 @@ public class UrlService {
                 : String.format("%s://%s:%d", protocol, host, port);
     }
 
+    /**
+     * Запрос на указанный URL и если запрос успешный, то парсинг полученного html.
+     * На странице проверяется наличие тегов: title>, h1>, meta name="description" content="...">
+     * и запись в БД содержимое найденных тегов
+     * @param url проверяемый URL
+     */
     public static void checkUrl(Url url) {
         HttpResponse<String> response = Unirest
                 .get(url.getName())
@@ -102,6 +108,7 @@ public class UrlService {
         String htmlContent = response.getBody();
 
         Document doc = Jsoup.parse(htmlContent);
+
         if (doc.title() != null) {
             titleTag = doc.title();
         }
@@ -111,6 +118,7 @@ public class UrlService {
         if (doc.select("h1").first() != null) {
             h1Tag = doc.select("h1").first().text();
         }
+
         UrlCheck urlCheck = new UrlCheck(statusCode, titleTag, h1Tag, descriptionTag, url);
         urlCheck.save();
     }

@@ -16,9 +16,6 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 
 public final class App {
     private static final String TEMPLATE_DIR = "/templates/";
@@ -92,19 +89,7 @@ public final class App {
         return app;
     }
 
-    private static void showAppURL() throws IOException {
-        Socket socket = new Socket();
-        socket.connect(new InetSocketAddress("google.com", 80)); // получить внешний ip-адрес
-        String inetIP = socket.getLocalAddress().toString();
-
-        int port = getPort();
-        String localIP = InetAddress.getLocalHost().getHostAddress();
-        String baseUrl = "App listening on ---> http:/" + inetIP + ":" + port;
-        System.out.println(baseUrl);
-    }
-
     public static void main(String[] args) throws IOException {
-        showAppURL();
         Javalin app = getApp();
         app.start(getPort());
     }

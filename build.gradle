@@ -22,8 +22,13 @@ application {
 
 compileJava {
     options.release = 15
-    options.encoding = "UTF-8"
+    options.encoding = 'UTF-8'
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 sourceCompatibility = '15'
 sourceSets.main.java.srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
 

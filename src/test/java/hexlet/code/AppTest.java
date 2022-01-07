@@ -159,22 +159,24 @@ public final class AppTest {
         assertThat(body).contains(expectedUrl);
     }
 
-    // Проверка отображение введённого URL в списке: GET /urls/{id}
+    // Проверка отображение введённого URL: GET /urls/{id}
     @Test
     void testGetUrl() {
         String enteredUrl = "https://www.example.com/bla-bla-bla";
         String expectedUrl = "https://www.example.com";
-        HttpResponse<?> response = Unirest
+        HttpResponse<String> response = Unirest
                 .post(baseUrl + "/urls")
                 .field("url", enteredUrl)
                 .asEmpty();
         assertThat(response.getStatus()).isEqualTo(302);
 
+        Url url = new QUrl().name.equalTo(expectedUrl).findOne();
+
         response = Unirest
-                .get(baseUrl + "/urls/1")
+                .get(baseUrl + "/urls/" + url.getId())
                 .asString();
         // проверяем наличие ожидаемого значения URL на странице
-        String body = (String) response.getBody();
+        String body = response.getBody();
         assertThat(body).contains(expectedUrl);
     }
 
