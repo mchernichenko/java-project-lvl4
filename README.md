@@ -15,7 +15,7 @@
 ```sh
 make start-dev 
 ```
-* Для запуска проект локально, с использованием Postgres, в файле конфигурации *java-project-lvl4/src/main\resources\application.yaml*
+* Для запуска проект локально, с использованием Postgres, в файле конфигурации *java-project-lvl4/src/main/resources/application.yaml*
 прописать в *datasource.local_pg.url* строку коннекта в БД Postgres и из корня проекта выполнить команду
 ```sh
 make start-pg 
