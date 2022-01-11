@@ -23,7 +23,6 @@ public class UrlController {
 
     public static Handler createUrl = ctx -> {
         String urlName = ctx.formParam("url").trim();
-        UrlService urlService = new UrlService();
 
         try {
             URL_SERVICE.save(urlName);

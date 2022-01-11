@@ -26,7 +26,7 @@ public class UrlService {
     public void save(String name) throws CustomException {
         String formatUrl;
         try {
-            formatUrl = urlFormatter(name);
+            formatUrl = formatUrl(name);
         } catch (MalformedURLException e) {
             throw CustomExceptions.INVALID_URL;
         }
@@ -78,7 +78,7 @@ public class UrlService {
      * @return отформатированный URL
      * @throws MalformedURLException - если переданная строка не является URL`ом
      */
-    public static String urlFormatter(String name) throws MalformedURLException {
+    public static String formatUrl(String name) throws MalformedURLException {
         URL urlObj = new URL(name);
         int port = urlObj.getPort();
         String protocol = urlObj.getProtocol();

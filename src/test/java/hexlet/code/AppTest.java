@@ -16,6 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -28,6 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * POST /urls/{id}/checks - проверка URL с добавлением записи о проверке (после - редирект на showInfoUrl.html)
  */
 public final class AppTest {
+    private static final String FIXTURE_PATH = "src/test/resources/fixtures/";
+
     private static Javalin app;
     private static String baseUrl;
     private static Transaction transaction;
@@ -181,24 +187,13 @@ public final class AppTest {
     }
 
     @Test
-    void testCheckUrl() throws InterruptedException {
+    void testCheckUrl() throws InterruptedException, IOException {
 
-        StringBuilder bodyHtml = new StringBuilder();
-        bodyHtml.append("""
-            <!DOCTYPE html>
-            <html>
-               <head>
-                  <title>testTitle</title>
-                  <meta name="description" content="testDescription" />
-               </head>
-               <body>
-                  <h1>testH1</h1>
-               </body>
-            </html>
-            """);
+        Path resPath = Paths.get(FIXTURE_PATH + "test_html.html");
+        String bodyHtml =  Files.readString(resPath);
 
         String moskBaseUrl = mockServer.url("/").toString();
-        mockServer.enqueue(new MockResponse().setBody(bodyHtml.toString()));
+        mockServer.enqueue(new MockResponse().setBody(bodyHtml));
 
         // добавляем URL мок-сервиса для проверки и достаём ид БД его id
         Unirest
