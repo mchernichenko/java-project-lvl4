@@ -24,7 +24,7 @@
                     <td>
                         <a th:text="*{getName()}" th:href="@{/urls/{id}(id=*{getId()})}"></a>
                     </td>
-                    <td th:text="${#temporals.format(url.getUrlChecks().get(url.getUrlChecks().size - 1).getCreatedAt(), 'dd/MM/yyyy HH:mm')}"
+                    <td th:text="${#temporals.format(url.getUrlChecks().get(0).getCreatedAt(), 'dd/MM/yyyy HH:mm')}"
                         th:if="${not url.getUrlChecks().isEmpty()}">
                     </td>
                     <td "-" th:if="${url.getUrlChecks().isEmpty()}"></td>
